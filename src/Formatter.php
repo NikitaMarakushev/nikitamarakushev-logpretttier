@@ -15,6 +15,11 @@ class Formatter
     private string $fileName;
 
     /**
+     * @var string
+     */
+    private string $logFormat = "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"";
+
+    /**
      * @var array|string[]
      */
     private array $crowlersList = [
@@ -30,10 +35,11 @@ class Formatter
         'msnbot', 'msnbot-media', 'msnbot-news'
     ];
 
+
     /**
      * @param string $fileName
      */
-    public function setFileName(string $fileName)
+    public function __construct(string $fileName)
     {
         $this->fileName = $fileName;
     }
@@ -133,5 +139,21 @@ class Formatter
     public function printFormattedLog(array $outputData): void
     {
         print_r(json_decode(json_encode($outputData), true, JSON_UNESCAPED_SLASHES));
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogFormat(): string
+    {
+        return $this->logFormat;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileName(): string
+    {
+        return $this->fileName;
     }
 }
