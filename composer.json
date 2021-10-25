@@ -1,6 +1,11 @@
 {
     "name": "nikitamarakushev/logpretttier",
     "description": "this package is used for the beautiful output passed to it by the access_log file",
+    "keywords": [
+        "pretty print",
+        "apache log",
+        "logger package"
+    ],
     "autoload": {
         "psr-4": {
             "Nikitamarakushev\\Logpretttier\\": "src/"
@@ -13,7 +18,8 @@
         }
     ],
     "require": {
-      "ext-json": "*",
+        "php": "^7.4",
+        "ext-json": "*",
         "benmorel/apache-log-parser": "^0.2.0",
         "monolog/monolog": "^2.3"
     }
