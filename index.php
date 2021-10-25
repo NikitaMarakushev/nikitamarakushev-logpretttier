@@ -3,38 +3,33 @@
 declare(strict_types=1);
 
 use BenMorel\ApacheLogParser\Parser;
+use Nikitamarakushev\Logpretttier\Formatter;
 
 require 'vendor/autoload.php';
 
 $logFormat = "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"";
 $parser = new Parser($logFormat);
-$lines = file($argv[1], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);;
 
-foreach ($lines as $line) {
-   $entry[] = $parser->parse($line, true);
-}
+$formatter = new Formatter();
+$formatter->setFileName($argv[1]);
+$lines = $formatter->getViews();
+$entry = $formatter->getArrayOfRequestinInfo($lines, $parser);
+$urls = $formatter->getUrls($entry);
+$allSize = $formatter->getTrafficSize($entry);
+$crawlers = $formatter->getCrawlers();
+$statusCodes = $formatter->getStatusCodes($entry);
 
-$urls = [];
-
-foreach ($entry as $elem) {
-   $urls[] = $elem["requestHeader:Referer"];
-}
-
-$allSize = [];
-
-foreach ($entry as $size) {
-    $allSize[] = $elem["responseSize"];
-}
-
-
-$entry1 = [
+$outputData = [
     "views" => count($lines),
     "urls" => array_unique($urls),
     "traffic" => array_sum($allSize),
-    "crawlers" => [],
+    "crawlers" => [
+        'Google' => count($crawlers)
+    ],
     "statusCodes" => [
-
+        200 => array_count_values($statusCodes)["200"],
+        301 => array_count_values($statusCodes)["301"]
     ]
 ];
 
-print_r(json_decode(json_encode($entry1), true, JSON_UNESCAPED_SLASHES));
+$formatter->printFormattedLog($outputData);
