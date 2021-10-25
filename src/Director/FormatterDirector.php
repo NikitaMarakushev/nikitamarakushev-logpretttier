@@ -1,8 +1,9 @@
 <?php
 
-namespace Nikitamarakushev\Logpretttier;
+namespace Nikitamarakushev\Logpretttier\Director;
 
 use BenMorel\ApacheLogParser\Parser;
+use Nikitamarakushev\Logpretttier\Formatter;
 
 /**
  * Basic formatter class director
@@ -35,14 +36,14 @@ class FormatterDirector
         $formatter = new Formatter($this->formatter->getFileName());
         $lines = $formatter->getViews();
         $connectionsCollection = $formatter->getArrayOfRequestinInfo($lines, $parser);
-        $urls = $formatter->getUrls($connectionsCollection);
+        $urls = array_unique($formatter->getUrls($connectionsCollection));
         $allSize = $formatter->getTrafficSize($connectionsCollection);
         $crawlers = $formatter->getCrawlers($connectionsCollection);
         $statusCodes = $formatter->getStatusCodes($connectionsCollection);
 
         $outputData = [
             "views" => count($lines),
-            "urls" => array_values(array_unique($urls)),
+            "urls" => count($urls),
             "traffic" => array_sum($allSize),
             "crawlers" => array_count_values($crawlers),
             "statusCodes" => array_count_values($statusCodes)

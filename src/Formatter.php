@@ -146,7 +146,6 @@ class Formatter
      */
     public function printFormattedLog(array $outputData): void
     {
-//        print_r(json_decode(json_encode($outputData, JSON_THROW_ON_ERROR), true, JSON_UNESCAPED_SLASHES, JSON_THROW_ON_ERROR));
         echo stripslashes(json_encode($outputData, JSON_PRETTY_PRINT));
     }
 
