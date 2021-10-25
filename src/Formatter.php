@@ -51,7 +51,7 @@ class Formatter
     }
 
     /**
-     * @return array|false
+     * @return array
      */
     public function getViews(): array
     {
@@ -101,9 +101,9 @@ class Formatter
 
     /**
      * @param string $userAgent
-     * @return mixed|string|void
+     * @return string
      */
-    public function getBots(string $userAgent)
+    public function getBots(string $userAgent): string
     {
         foreach ($this->crowlersList as $certainCraler) {
             if (stripos(strtolower($userAgent), strtolower($certainCraler))) {
@@ -120,7 +120,8 @@ class Formatter
     {
         $crawlers = [];
         foreach ($entry as $entryItem) {
-            if (!is_null($this->getBots($entryItem["requestHeader:User-agent"]))) {
+            $userAgent = $this->getBots($entryItem["requestHeader:User-agent"]);
+            if (isset($userAgent)) {
                 $crawlers[] = $this->getBots($entryItem["requestHeader:User-agent"]);
             }
         }
