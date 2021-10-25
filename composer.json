@@ -1,0 +1,18 @@
+{
+    "name": "nikitamarakushev/logpretttier",
+    "description": "this package is used for the beautiful output passed to it by the access_log file",
+    "autoload": {
+        "psr-4": {
+            "Nikitamarakushev\\Logpretttier\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "NikitaMarakushev",
+            "email": "nikitamarakushev@yandex.ru"
+        }
+    ],
+    "require": {
+      "ext-json": "*"
+    }
+}
