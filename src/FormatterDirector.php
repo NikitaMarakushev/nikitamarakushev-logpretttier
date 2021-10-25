@@ -25,6 +25,8 @@ class FormatterDirector
     }
 
     /**
+     * Main function, makes a pipeline of other necessary functions, which are used in building pretty output
+     * of apache access log
      * @throws \JsonException
      */
     public function buildFormattedLog(): void

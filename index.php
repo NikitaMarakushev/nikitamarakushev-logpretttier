@@ -12,13 +12,13 @@ require 'vendor/autoload.php';
 $log = new Logger('main');
 $log->pushHandler(new StreamHandler('logs/error.log', Logger::ERROR));
 
-$formatterDirector = new FormatterDirector();
-$formatterDirector->setFormatter(new Formatter($argv[1]));
 
 try {
+    $formatterDirector = new FormatterDirector();
+    $formatterDirector->setFormatter(new Formatter($argv[1]));
     $formatterDirector->buildFormattedLog();
-} catch (JsonException $e) {
+} catch (JsonException $exception) {
     $log->error(sprintf(
-        '%s%s', $e->getMessage(), $e->getTrace()
+        '%s%s', $exception->getMessage(), $exception->getTrace()
     ));
 }

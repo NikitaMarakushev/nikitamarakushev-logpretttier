@@ -16,10 +16,7 @@ class Formatter
      */
     private string $fileName;
 
-    /**
-     * @var string
-     */
-    private string $logFormat = "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"";
+    private const LOG_FORMAT = "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"";
 
     /**
      * @var array|string[]
@@ -158,7 +155,7 @@ class Formatter
      */
     public function getLogFormat(): string
     {
-        return $this->logFormat;
+        return self::LOG_FORMAT;
     }
 
     /**
