@@ -12,7 +12,7 @@ require 'vendor/autoload.php';
 $log = new Logger('main');
 $log->pushHandler(new StreamHandler('logs/error.log', Logger::ERROR));
 
-if ($argv[0] === 'index.php' || count($argv) > 2) {
+if ($argv[1] === 'index.php' || count($argv) > 2) {
     print_r("logpretttier ERROR: invalid syntax of command, for help run, please 'php index.php -h' \n");
     die;
 }
