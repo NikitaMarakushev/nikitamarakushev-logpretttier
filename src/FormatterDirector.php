@@ -19,32 +19,31 @@ class FormatterDirector
     /**
      * @param Formatter $formatter
      */
-    public function setFormatter(Formatter $formatter): void {
+    public function setFormatter(Formatter $formatter): void
+    {
         $this->formatter = $formatter;
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function buildFormattedLog(): void
     {
         $parser = new Parser($this->formatter->getLogFormat());
         $formatter = new Formatter($this->formatter->getFileName());
         $lines = $formatter->getViews();
-        $entry = $formatter->getArrayOfRequestinInfo($lines, $parser);
-        $urls = $formatter->getUrls($entry);
-        $allSize = $formatter->getTrafficSize($entry);
-        $crawlers = $formatter->getCrawlers();
-        $statusCodes = $formatter->getStatusCodes($entry);
+        $connectionsCollection = $formatter->getArrayOfRequestinInfo($lines, $parser);
+        $urls = $formatter->getUrls($connectionsCollection);
+        $allSize = $formatter->getTrafficSize($connectionsCollection);
+        $crawlers = $formatter->getCrawlers($connectionsCollection);
+        $statusCodes = $formatter->getStatusCodes($connectionsCollection);
 
         $outputData = [
             "views" => count($lines),
-            "urls" => array_unique($urls),
+            "urls" => array_values(array_unique($urls)),
             "traffic" => array_sum($allSize),
-            "crawlers" => [
-                'Google' => count($crawlers)
-            ],
-            "statusCodes" => [
-                200 => array_count_values($statusCodes)["200"],
-                301 => array_count_values($statusCodes)["301"]
-            ]
+            "crawlers" => array_count_values($crawlers),
+            "statusCodes" => array_count_values($statusCodes)
         ];
 
         $this->formatter->printFormattedLog($outputData);

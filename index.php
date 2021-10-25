@@ -9,4 +9,9 @@ require 'vendor/autoload.php';
 
 $formatterDirector = new FormatterDirector();
 $formatterDirector->setFormatter(new Formatter($argv[1]));
-$formatterDirector->buildFormattedLog();
+
+try {
+    $formatterDirector->buildFormattedLog();
+} catch (JsonException $e) {
+    print_r($e->getMessage());
+}

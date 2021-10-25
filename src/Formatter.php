@@ -25,16 +25,20 @@ class Formatter
      * @var array|string[]
      */
     private array $crowlersList = [
-        'rambler', 'googlebot', 'aport', 'yahoo', 'msnbot', 'turtle', 'mail.ru', 'omsktele',
-        'yetibot', 'picsearch', 'sape.bot', 'sape_context', 'gigabot', 'snapbot', 'alexa.com',
-        'megadownload.net', 'askpeter.info', 'igde.ru', 'ask.com', 'qwartabot', 'yanga.co.uk',
-        'scoutjet', 'similarpages', 'oozbot', 'shrinktheweb.com', 'aboutusbot', 'followsite.com',
-        'dataparksearch', 'google-sitemaps', 'appEngine-google', 'feedfetcher-google',
-        'liveinternet.ru', 'xml-sitemaps.com', 'agama', 'metadatalabs.com', 'h1.hrn.ru',
-        'googlealert.com', 'seo-rus.com', 'yaDirectBot', 'yandeG', 'yandex',
-        'yandexSomething', 'Copyscape.com', 'AdsBot-Google', 'domaintools.com',
-        'Nigma.ru', 'bing.com', 'dotnetdotcom',
-        'msnbot', 'msnbot-media', 'msnbot-news'
+        'YandexBot', 'YandexAccessibilityBot', 'YandexMobileBot', 'YandexDirectDyn', 'YandexScreenshotBot',
+        'YandexImages', 'YandexVideo', 'YandexVideoParser', 'YandexMedia', 'YandexBlogs', 'YandexFavicons',
+        'YandexWebmaster', 'YandexPagechecker', 'YandexImageResizer', 'YandexAdNet', 'YandexDirect',
+        'YaDirectFetcher', 'YandexCalendar', 'YandexSitelinks', 'YandexMetrika', 'YandexNews',
+        'YandexNewslinks', 'YandexCatalog', 'YandexAntivirus', 'YandexMarket', 'AppleWebKit',
+        'YandexForDomain', 'YandexSpravBot', 'YandexSearchShop', 'YandexMedianaBot', 'YandexOntoDB',
+        'YandexOntoDBAPI', 'YandexTurbo', 'YandexVerticals', 'Googlebot', 'Googlebot-Image', 'Mediapartners-Google', 'AdsBot-Google', 'APIs-Google',
+        'AdsBot-Google-Mobile', 'AdsBot-Google-Mobile', 'Googlebot-News', 'Googlebot-Video',
+        'AdsBot-Google-Mobile-Apps', 'Mail.RU_Bot', 'bingbot', 'Accoona', 'ia_archiver', 'Ask Jeeves', 'OmniExplorer_Bot', 'W3C_Validator',
+        'WebAlta', 'YahooFeedSeeker', 'Yahoo!', 'Ezooms', 'Tourlentabot', 'MJ12bot', 'AhrefsBot',
+        'SearchBot', 'SiteStatus', 'Nigma.ru', 'Baiduspider', 'Statsbot', 'SISTRIX', 'AcoonBot', 'findlinks',
+        'proximic', 'OpenindexSpider', 'statdom.ru', 'Exabot', 'Spider', 'SeznamBot', 'oBot', 'C-T bot',
+        'Updownerbot', 'Snoopy', 'heritrix', 'Yeti', 'DomainVader', 'DCPbot', 'PaperLiBot', 'StackRambler',
+        'msnbot', 'msnbot-media', 'msnbot-news', 'Windows NT'
     ];
 
 
@@ -74,7 +78,6 @@ class Formatter
      */
     public function getUrls(array $entry): array
     {
-        $urls = [];
         foreach ($entry as $elem) {
             $urls[] = $elem["requestHeader:Referer"];
         }
@@ -89,35 +92,39 @@ class Formatter
     public function getTrafficSize(array $entry): array
     {
         $allSize = [];
-
         foreach ($entry as $size) {
             $allSize[] = $size["responseSize"];
         }
         return $allSize;
     }
 
+
     /**
-     * @param $userAgent
+     * @param string $userAgent
      * @return mixed|string|void
      */
-    public function getBots($userAgent): string {
-        foreach ($this->crowlersList as $bot) {
-            if (stripos($userAgent, $bot) !== false) {
-                return $bot;
+    public function getBots(string $userAgent)
+    {
+        foreach ($this->crowlersList as $certainCraler) {
+            if (stripos(strtolower($userAgent), strtolower($certainCraler))) {
+                return $certainCraler;
             }
         }
     }
 
     /**
+     * @param array $entry
      * @return array
      */
-    public function getCrawlers(): array {
+    public function getCrawlers(array $entry): array
+    {
         $crawlers = [];
-        foreach ($crawlers as $cr) {
-            if (!is_null($this->getBots($this->crowlersList, $cr))) {
-                $cra[] = $this->getBots($cr);
+        foreach ($entry as $entryItem) {
+            if (!is_null($this->getBots($entryItem["requestHeader:User-agent"]))) {
+                $crawlers[] = $this->getBots($entryItem["requestHeader:User-agent"]);
             }
         }
+
         return $crawlers;
     }
 
@@ -137,10 +144,12 @@ class Formatter
 
     /**
      * @param array $outputData
+     * @throws \JsonException
      */
     public function printFormattedLog(array $outputData): void
     {
-        print_r(json_decode(json_encode($outputData), true, JSON_UNESCAPED_SLASHES));
+//        print_r(json_decode(json_encode($outputData, JSON_THROW_ON_ERROR), true, JSON_UNESCAPED_SLASHES, JSON_THROW_ON_ERROR));
+        echo stripslashes(json_encode($outputData, JSON_PRETTY_PRINT));
     }
 
     /**
