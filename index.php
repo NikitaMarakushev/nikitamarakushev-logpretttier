@@ -6,8 +6,16 @@ use Nikitamarakushev\Logpretttier\Formatter;
 
 require 'vendor/autoload.php';
 
-//$dataForPrint = json_encode($argv[1]);
-/** @var string $dataForPrint */
-$dataForPrint = json_encode(file_get_contents($argv[1]), JSON_UNESCAPED_SLASHES);
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Formatter\JsonFormatter;
 
-print_r("<pre>" . Formatter::prettyPrint($dataForPrint) . "</pre>");
+$logger = new Logger('transactions');
+
+$logstream = new StreamHandler('php://stdout', Logger::INFO);
+
+$logstream->setFormatter(new JsonFormatter());
+
+$logger->pushHandler($logstream);
+
+$logger->info(file_get_contents($argv[1]));
