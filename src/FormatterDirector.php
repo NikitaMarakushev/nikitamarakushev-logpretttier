@@ -4,6 +4,9 @@ namespace Nikitamarakushev\Logpretttier;
 
 use BenMorel\ApacheLogParser\Parser;
 
+/**
+ * Basic formatter class director
+ */
 class FormatterDirector
 {
     /**
