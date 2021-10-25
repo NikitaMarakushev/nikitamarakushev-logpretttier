@@ -10,7 +10,7 @@ use Nikitamarakushev\Logpretttier\Formatter;
 use Nikitamarakushev\Logpretttier\Director\FormatterDirector;
 use Nikitamarakushev\Logpretttier\Validator\ArgumentsValidator;
 
-ArgumentsValidator::validate($argv);
+(new ArgumentsValidator())->validate($argv);
 
 $log = new Logger('main');
 $log->pushHandler(new StreamHandler('logs/error.log', Logger::ERROR));
