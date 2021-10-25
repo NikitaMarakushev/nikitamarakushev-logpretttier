@@ -6,6 +6,8 @@ use BenMorel\ApacheLogParser\Parser;
 
 /**
  * Basic formatter class
+ *
+ * @author Nikita Marakushev
  */
 class Formatter
 {
@@ -112,7 +114,7 @@ class Formatter
     public function getCrawlers(): array {
         $crawlers = [];
         foreach ($crawlers as $cr) {
-            if (!is_null(getBots($this->crowlersList, $cr))) {
+            if (!is_null($this->getBots($this->crowlersList, $cr))) {
                 $cra[] = $this->getBots($cr);
             }
         }

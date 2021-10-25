@@ -6,6 +6,8 @@ use BenMorel\ApacheLogParser\Parser;
 
 /**
  * Basic formatter class director
+ *
+ * @author Nikita Marakushev
  */
 class FormatterDirector
 {
