@@ -2,9 +2,18 @@
 
 namespace Nikitamarakushev\Logpretttier;
 
+/**
+ * Basic formatter class
+ */
 class Formatter
 {
-    public static function prettyPrint(&$j, $indentor = "\t", $indent = "") {
+    /**
+     * @param $j
+     * @param string $indentor
+     * @param string $indent
+     * @return mixed|string
+     */
+    public static function prettyPrint(&$j, string $indentor = "\t", string $indent = "") {
         $inString = $escaped = false;
         $result = $indent;
 
