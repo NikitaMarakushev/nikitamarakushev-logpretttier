@@ -10,10 +10,14 @@ class Formatter
     /**
      * String template
      */
-    private const template = '#(([0-9]{1,3}\.){3}[0-9]{1,3}).{1,}GET ([0-9a-z/\_\.\-]{1,})#i';
+    private const template = '$pattern = "/(\S+) (\S+) (\S+) \[([^:]+):(\d+:\d+:\d+) ([^\]]+)\] \"(\S+) (.*?) (\S+)\" (\S+) (\S+) (\".*?\") (\".*?\")/"';
 
     /**
      * printer
      */
-    public static function prettyPrint() {}
+    public static function prettyPrint(&$file) {
+        for ($i = 0, $iMax = count(file($file)); $i < $iMax; $i++) {
+            preg_match (self::template, $file, $result);
+        }
+    }
 }

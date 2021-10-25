@@ -2,20 +2,39 @@
 
 declare(strict_types=1);
 
-use Nikitamarakushev\Logpretttier\Formatter;
+use BenMorel\ApacheLogParser\Parser;
 
 require 'vendor/autoload.php';
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Formatter\JsonFormatter;
+$logFormat = "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"";
+$parser = new Parser($logFormat);
+$lines = file($argv[1], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);;
 
-$logger = new Logger('transactions');
+foreach ($lines as $line) {
+   $entry[] = $parser->parse($line, true);
+}
 
-$logstream = new StreamHandler('php://stdout', Logger::INFO);
+$urls = [];
 
-$logstream->setFormatter(new JsonFormatter());
+foreach ($entry as $elem) {
+   $urls[] = $elem["requestHeader:Referer"];
+}
 
-$logger->pushHandler($logstream);
+$allSize = [];
 
-$logger->info(file_get_contents($argv[1]));
+foreach ($entry as $size) {
+    $allSize[] = $elem["responseSize"];
+}
+
+
+$entry1 = [
+    "views" => count($lines),
+    "urls" => array_unique($urls),
+    "traffic" => array_sum($allSize),
+    "crawlers" => [],
+    "statusCodes" => [
+
+    ]
+];
+
+print_r(json_decode(json_encode($entry1), true, JSON_UNESCAPED_SLASHES));
