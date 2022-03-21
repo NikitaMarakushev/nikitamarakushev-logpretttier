@@ -12,8 +12,10 @@ use Nikitamarakushev\Logpretttier\Validator\ArgumentsValidator;
 
 (new ArgumentsValidator())->validate($argv);
 
+const ERROR_LOG_PATH = 'logs/error.log';
+
 $log = new Logger('main');
-$log->pushHandler(new StreamHandler('logs/error.log', Logger::ERROR));
+$log->pushHandler(new StreamHandler(ERROR_LOG_PATH, Logger::ERROR));
 
 try {
     $formatterDirector = new FormatterDirector();
