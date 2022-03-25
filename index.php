@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-require 'vendor/autoload.php';
+const AUTOLOAD_DIR = 'vendor/autoload.php';
+
+require AUTOLOAD_DIR;
 
 use Nikitamarakushev\Logpretttier\Application;
 use Nikitamarakushev\Logpretttier\Validator\ArgumentsValidator;
